@@ -1,0 +1,96 @@
+@startuml
+
+title Class Diagram - Smart Home Devices Integeration Platform
+
+Flow *-- Node
+Node *-- Device
+Node *-- Event
+Device *-- Event
+Device *-- Value
+Value <|-- BooleanValue
+Value <|-- FloatValue
+Value <|-- IntegerValue
+Value <|-- StringValue
+Event <|-- AdHocEvent
+AdHocEvent <|-- NightTimeEvent
+AdHocEvent <|-- DayTimeEvent
+Event <|-- DeviceEvent
+DeviceEvent <|-- LightOnEvent
+DeviceEvent <|-- LightOffEvent
+
+class Flow {
+  -head : Node
+  -isActive : bool
+  -flowId : String
+  +monitor() : void
+  +disableFlow() : boolean
+  +enableFlow() : boolean
+}
+
+class Node {
+    -device : Device
+    -events : List<Event>
+    -triggers : List<Node>
+    +triggerAllEvents() : boolean
+    +verifyAllEvents() : boolean
+    +tirggerNextNodes() : boolean
+}
+
+class Device {
+    -deviceName : String
+    -command : String
+    -resourceName : String
+    -events : List<Event>
+    -value : Value
+}
+
+Interface Event {
+    -eventName : String
+    +isActive() : boolean
+}
+
+Interface AdHocEvent {
+    -eventName : String
+    +isActive() : boolean
+}
+
+Interface DeviceEvent {
+    -eventName : String
+    -device : Device
+    +isActive() : boolean
+    +trigger(Value value) : boolean
+}
+
+Class LightOnEvent
+Class LightOffEvent
+Class DayTimeEvent
+Class NightTimeEvent
+
+
+Interface Value
+
+Class BooleanValue {
+    -value : boolean
+    +setValue(boolean value)
+    +getValue() : boolean
+}
+
+Class FloatValue {
+    -value : float
+    +setValue(float value)
+    +getValue() : float
+}
+
+Class IntegerValue {
+    -value : int
+    +setValue(int value)
+    +getValue() : int
+}
+
+Class StringValue {
+    -value : String
+    +setValue(int value)
+    +getValue() : int
+}
+
+@enduml
